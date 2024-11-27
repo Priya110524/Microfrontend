@@ -35,6 +35,7 @@ module.exports = {
       remotes: {
         forms: 'forms@http://localhost:8081/remoteEntry.js',
         tables: 'tables@http://localhost:8082/remoteEntry.js',
+        tables1: 'tables1@http://localhost:8083/remoteEntry.js',
       },
       shared: {
         react: { 

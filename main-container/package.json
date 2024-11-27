@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "^7.x.x",
+    "@mui/icons-material": "^5.15.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

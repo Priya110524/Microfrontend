@@ -113,7 +113,7 @@ const Table = () => {
 
   return (
     <div>
-      <h1 className="heading">Client Data</h1>
+      <h1 className="heading">Server Data</h1>
       <div className="search-container">
         <form onSubmit={handleSearch}>
           <input
