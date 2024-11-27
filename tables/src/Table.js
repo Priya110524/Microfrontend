@@ -15,23 +15,36 @@ const Table = () => {
   // Available page size options
   const pageSizeOptions = [10, 25, 50, 75, 100];
 
+  // Add new state for column-specific searches
+  const [columnSearches, setColumnSearches] = useState({
+    client_name: '',
+    product: '',
+    pan_number: '',
+    phone_number: '',
+    request_for: '',
+    status: '',
+    activity: ''
+  });
+
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       // Create column configs for search/sort
       const columnConfigs = [];
       
-      // Add search configuration if there's a search term
-      if (searchTerm) {
-        columnConfigs.push({
-          column: 'client_name', // or whichever column you want to search
-          search_str: searchTerm,
-          sort: null
-        });
-      }
+      // Add search configuration for each column if there's a search term
+      Object.entries(columnSearches).forEach(([column, searchStr]) => {
+        if (searchStr) {
+          columnConfigs.push({
+            column,
+            search_str: searchStr,
+            sort: column === sortColumn ? sortDirection : null
+          });
+        }
+      });
 
-      // Add sort configuration if sorting is active
-      if (sortColumn && sortDirection) {
+      // Add sort configuration if sorting is active and no search for that column
+      if (sortColumn && sortDirection && !columnSearches[sortColumn]) {
         columnConfigs.push({
           column: sortColumn,
           search_str: null,
@@ -58,12 +71,12 @@ const Table = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, pageSize, searchTerm, sortColumn, sortDirection]);
+  }, [currentPage, pageSize, columnSearches, sortColumn, sortDirection]);
 
   // Fetch data when page changes
   useEffect(() => {
     fetchData();
-  }, [currentPage, pageSize, searchTerm, sortColumn, sortDirection, fetchData]);
+  }, [currentPage, pageSize, columnSearches, sortColumn, sortDirection, fetchData]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -111,51 +124,90 @@ const Table = () => {
     return '↕'; // Default both arrows when not sorted
   };
 
+  // Handle column search change
+  const handleColumnSearch = (column, value) => {
+    setColumnSearches(prev => ({
+      ...prev,
+      [column]: value
+    }));
+  };
+
   return (
     <div>
       <h1 className="heading">Server Data</h1>
-      <div className="search-container">
-        <form onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="Enter exact client name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-          <button 
-            type="submit"
-            className="search-button"
-            disabled={loading}
-          >
-            {loading ? 'Searching...' : 'Search'}
-          </button>
-        </form>
-      </div>
       <div className="table-container">
         <table className="table">
           <thead>
             <tr>
-              <th onClick={() => handleSort('client_name')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('client_name')}>
                 Client Name <span className={`sort-indicator ${sortColumn === 'client_name' ? 'active' : ''}`}>{getSortIndicator('client_name')}</span>
+                <input
+                  type="text"
+                  placeholder="Search client..."
+                  value={columnSearches.client_name}
+                  onChange={(e) => handleColumnSearch('client_name', e.target.value)}
+                  className="column-search-input"
+                />
               </th>
-              <th onClick={() => handleSort('product')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('product')}>
                 Product <span className={`sort-indicator ${sortColumn === 'product' ? 'active' : ''}`}>{getSortIndicator('product')}</span>
+                <input
+                  type="text"
+                  placeholder="Search product..."
+                  value={columnSearches.product}
+                  onChange={(e) => handleColumnSearch('product', e.target.value)}
+                  className="column-search-input"
+                />
               </th>
-              <th onClick={() => handleSort('pan_number')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('pan_number')}>
                 PAN Number <span className={`sort-indicator ${sortColumn === 'pan_number' ? 'active' : ''}`}>{getSortIndicator('pan_number')}</span>
+                <input
+                  type="text"
+                  placeholder="Search PAN..."
+                  value={columnSearches.pan_number}
+                  onChange={(e) => handleColumnSearch('pan_number', e.target.value)}
+                  className="column-search-input"
+                />
               </th>
-              <th onClick={() => handleSort('phone_number')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('phone_number')}>
                 Phone Number <span className={`sort-indicator ${sortColumn === 'phone_number' ? 'active' : ''}`}>{getSortIndicator('phone_number')}</span>
+                <input
+                  type="text"
+                  placeholder="Search phone..."
+                  value={columnSearches.phone_number}
+                  onChange={(e) => handleColumnSearch('phone_number', e.target.value)}
+                  className="column-search-input"
+                />
               </th>
-              <th onClick={() => handleSort('request_for')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('request_for')}>
                 Request <span className={`sort-indicator ${sortColumn === 'request_for' ? 'active' : ''}`}>{getSortIndicator('request_for')}</span>
+                <input
+                  type="text"
+                  placeholder="Search request..."
+                  value={columnSearches.request_for}
+                  onChange={(e) => handleColumnSearch('request_for', e.target.value)}
+                  className="column-search-input"
+                />
               </th>
-              <th onClick={() => handleSort('status')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('status')}>
                 Status <span className={`sort-indicator ${sortColumn === 'status' ? 'active' : ''}`}>{getSortIndicator('status')}</span>
+                <input
+                  type="text"
+                  placeholder="Search status..."
+                  value={columnSearches.status}
+                  onChange={(e) => handleColumnSearch('status', e.target.value)}
+                  className="column-search-input"
+                />
               </th>
-              <th onClick={() => handleSort('activity')} style={{cursor: 'pointer'}}>
+              <th onClick={() => handleSort('activity')}>
                 Activity <span className={`sort-indicator ${sortColumn === 'activity' ? 'active' : ''}`}>{getSortIndicator('activity')}</span>
+                <input
+                  type="text"
+                  placeholder="Search activity..."
+                  value={columnSearches.activity}
+                  onChange={(e) => handleColumnSearch('activity', e.target.value)}
+                  className="column-search-input"
+                />
               </th>
             </tr>
           </thead>

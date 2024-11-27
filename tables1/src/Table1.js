@@ -44,9 +44,19 @@ const Table1 = () => {
   }, []);
 
   const handleSearch = () => {
-    const filtered = data.filter(item =>
-      item.client_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const searchTermLower = searchTerm.toLowerCase();
+    const filtered = data.filter(item => {
+      // Search through all fields of each item
+      return (
+        item.client_name?.toLowerCase().includes(searchTermLower) ||
+        item.product?.toLowerCase().includes(searchTermLower) ||
+        item.pan_number?.toLowerCase().includes(searchTermLower) ||
+        item.phone_number?.toString().includes(searchTermLower) ||
+        item.request_for?.toLowerCase().includes(searchTermLower) ||
+        item.status?.toLowerCase().includes(searchTermLower) ||
+        item.activity?.toLowerCase().includes(searchTermLower)
+      );
+    });
     setFilteredData(filtered);
   };
 
@@ -57,7 +67,7 @@ const Table1 = () => {
   };
 
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
+    <Box sx={{ width: '98%', height: '100%', mx: 'auto' }}>
       <Typography 
         variant="h4" 
         component="h1" 
@@ -77,12 +87,12 @@ const Table1 = () => {
         display: 'flex', 
         gap: 2, 
         mb: 3,
-        marginBottom: '40px',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: '50px',
       }}>
         <TextField
-          label="Search by Client Name"
+          label="Search in all columns"
           variant="outlined"
           size="small"
           value={searchTerm}
@@ -131,11 +141,35 @@ const Table1 = () => {
         '& .MuiDataGrid-columnHeader': {
           fontWeight: 'bold',
           color: 'black',
+          borderRight: '1px solid black',
+          padding: '0',
+          '&:focus': {
+            outline: 'none !important',
+            boxShadow: 'none !important',
+          },
+          '&.Mui-focused': {
+            outline: 'none !important',
+            boxShadow: 'none !important',
+          },
+        },
+        '& .MuiDataGrid-columnHeader:last-child': {
+          borderRight: 'none',
         },
         '& .MuiDataGrid-columnHeaderTitle': {
           fontWeight: 'bold',
           color: 'black',
           fontSize: '18px',
+        },
+        '& .MuiDataGrid-cell': {
+          borderRight: '1px solid black',
+          padding: '0',
+          '&:focus': {
+            outline: 'none !important',
+            boxShadow: 'none !important',
+          },
+        },
+        '& .MuiDataGrid-cell:last-child': {
+          borderRight: 'none',
         }
       }}>
         <DataGrid

@@ -51,18 +51,6 @@
     border: 1px solid #ddd;
   }
   
-  .table th {
-    background-color: #f4f4f4;
-  }
-  
-  .table tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
 .pagination {
   display: flex;
   justify-content: center;
@@ -168,5 +156,24 @@ th {
 
 th:hover .sort-indicator {
   color: #000;
+}
+
+.column-search-input {
+  width: 90%;
+  padding: 6px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.column-search-input:focus {
+  outline: none;
+  border-color: black;
+}
+
+/* Adjust header padding to accommodate search inputs */
+.table th {
+  position: relative;
 }
   

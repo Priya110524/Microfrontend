@@ -22,3 +22,9 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.css-az8st9-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.css-az8st9-MuiDataGrid-root .MuiDataGrid-cell:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
