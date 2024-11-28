@@ -1,4 +1,6 @@
 import React, { Suspense, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Sidebar from './Sidebar';
 
 const Forms = React.lazy(() => import('forms/Form'));
 const Tables = React.lazy(() => import('tables/Table'));
@@ -7,72 +9,25 @@ const Table1 = React.lazy(() => import('tables1/Table1'));
 const App = () => {
   const [view, setView] = useState('forms');
 
-  const renderContent = () => {
-    if (view === 'forms') {
-      return <Forms />;
-    }
-    if (view === 'tables') {
-      return <Tables />;
-    }
-    if (view === 'tables1') {
-      return <Table1 />;
-    }
-
-    return null;
-  };
-
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Main Application</h1>
-      <div style={{ marginBottom: '20px' }}>
-        <button 
-          onClick={() => setView('forms')}
-          style={{ 
-            marginRight: '10px',
-            backgroundColor: view === 'forms' ? 'black' : 'white',
-            color: view === 'forms' ? 'white' : 'black',
-            padding: '8px 16px',
-            border: '1px solid #dee2e6',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          Forms
-        </button>
-        <button 
-          onClick={() => setView('tables')}
-          style={{ 
-            marginRight: '10px',
-            backgroundColor: view === 'tables' ? 'black' : 'white',
-            color: view === 'tables' ? 'white' : 'black',
-            padding: '8px 16px',
-            border: '1px solid #dee2e6',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          Tables
-        </button>
-        <button 
-          onClick={() => setView('tables1')}
-          style={{ 
-            backgroundColor: view === 'tables1' ? 'black' : 'white',
-            color: view === 'tables1' ? 'white' : 'black',
-            padding: '8px 16px',
-            border: '1px solid #dee2e6',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          Tables1
-        </button>
+    <Router>
+      <div style={{ display: 'flex' }}>
+        <Sidebar />
+        <div style={{ padding: '20px', flex: 1 }}>
+          <h1>Main Application</h1>
+          <div style={{ marginTop: '20px' }}>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Routes>
+                <Route path="/forms" element={<Forms />} />
+                <Route path="/tables" element={<Tables />} />
+                <Route path="/tables1" element={<Table1 />} />
+                <Route path="/" element={<div>Welcome! Please select an option from the sidebar.</div>} />
+              </Routes>
+            </Suspense>
+          </div>
+        </div>
       </div>
-      <div style={{ marginTop: '20px' }}>
-        <Suspense fallback={<div>Loading...</div>}>
-          {renderContent()}
-        </Suspense>
-      </div>
-    </div>
+    </Router>
   );
 };
 
