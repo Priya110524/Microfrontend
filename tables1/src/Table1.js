@@ -67,7 +67,7 @@ const Table1 = () => {
   };
 
   return (
-    <Box sx={{ width: '98%', height: '100%', mx: 'auto' }}>
+    <Box sx={{ width: '98%', height: '100%', mx: 'auto', }}>
       <Typography 
         variant="h4" 
         component="h1" 

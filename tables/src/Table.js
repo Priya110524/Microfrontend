@@ -133,7 +133,7 @@ const Table = () => {
   };
 
   return (
-    <div>
+    <div className='main-content'>
       <h1 className="heading">Server Data</h1>
       <div className="table-container">
         <table className="table">

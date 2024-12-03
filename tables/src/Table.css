@@ -4,6 +4,9 @@
     justify-content: center;
  margin-top: 40px;
 }
+.main-content{
+  padding: 20px;
+}
 
 /* Search container styling */
 .search-container {

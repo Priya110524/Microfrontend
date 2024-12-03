@@ -2,7 +2,7 @@ import React from 'react';
 
 const App = () => {
   return (
-    <div>
+    <div className='main-content'>
       <h2>Forms Application</h2>
       <form>
         <div>
